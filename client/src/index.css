@@ -76,6 +76,14 @@
   --chart-4: 25 95% 53%;
   --chart-5: 280 81% 60%;
 
+  /* Grammar type colors for word replacements */
+  --grammar-verbe: 142 71% 45%;
+  --grammar-determinant: 25 95% 53%;
+  --grammar-pronom: 221 83% 53%;
+  --grammar-conjonction: 0 84% 60%;
+  --grammar-adverbe: 45 93% 47%;
+  --grammar-preposition: 271 81% 56%;
+
   --font-sans: 'Open Sans', sans-serif;
   --font-display: 'Poppins', sans-serif;
   --font-serif: Georgia, serif;
@@ -194,6 +202,14 @@
   --chart-3: 142 76% 45%;
   --chart-4: 25 95% 58%;
   --chart-5: 280 91% 65%;
+
+  /* Grammar type colors for word replacements */
+  --grammar-verbe: 142 71% 45%;
+  --grammar-determinant: 25 95% 53%;
+  --grammar-pronom: 221 83% 53%;
+  --grammar-conjonction: 0 84% 60%;
+  --grammar-adverbe: 45 93% 47%;
+  --grammar-preposition: 271 81% 56%;
 
   --shadow-2xs: 0px 2px 0px 0px hsl(240 6% 0% / 0.15);
   --shadow-xs: 0px 2px 0px 0px hsl(240 6% 0% / 0.20);

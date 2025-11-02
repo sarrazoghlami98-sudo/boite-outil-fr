@@ -8,7 +8,7 @@ interface InteractiveSentenceProps {
 
 export default function InteractiveSentence({ sentence, replacements }: InteractiveSentenceProps) {
   if (!replacements || replacements.length === 0) {
-    return <p className="text-lg leading-relaxed text-foreground">{sentence}</p>;
+    return <div className="text-base md:text-lg leading-snug text-foreground">{sentence}</div>;
   }
 
   const parts: JSX.Element[] = [];
@@ -41,5 +41,5 @@ export default function InteractiveSentence({ sentence, replacements }: Interact
     parts.push(<span key="text-end">{sentence.substring(lastIndex)}</span>);
   }
 
-  return <p className="text-lg leading-relaxed text-foreground">{parts}</p>;
+  return <div className="text-base md:text-lg leading-snug text-foreground">{parts}</div>;
 }

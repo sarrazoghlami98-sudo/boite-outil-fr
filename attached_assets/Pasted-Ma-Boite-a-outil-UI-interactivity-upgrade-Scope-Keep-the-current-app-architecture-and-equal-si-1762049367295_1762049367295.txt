@@ -1,0 +1,121 @@
+Ma Boite a outil — UI & interactivity upgrade
+
+Scope
+
+Keep the current app architecture and equal-size tiles on the home page.
+
+Work ONLY on the flashcard experience and examples inside each card.
+
+Do not remove the word-replacement feature; expand and polish it.
+
+1) Images in every example
+
+For every example sentence, include a small illustration that depicts the sentence (joyful, classroom-friendly, same visual style across the app).
+
+Image placement: left of the sentence on mobile (stacked), and a two-column layout on tablet/desktop so images and sentences sit side-by-side.
+
+Rounded corners, soft shadow, and alt text that describes the scene (“Garçon avec un ballon”, “Astronaute se prépare”, etc.).
+
+Reuse my slide visuals as stylistic references (same vibe, colors, and clarity).
+
+2) Color coding like the slides
+
+Color the target word in the sentence using the same scheme as the images:
+
+Verbe → green
+
+Déterminant → orange
+
+Pronom → blue
+
+Conjonction → red
+
+Adverbe → yellow
+
+Préposition → purple
+
+The colored word remains bold, readable, and has a dotted underline to signal interactivity.
+
+Show a tiny category label or icon under the sentence (“C’est un déterminant”, “C’est le verbe être”, etc.), matching the color.
+
+3) Bigger, kid-friendly typography
+
+Flashcard title: noticeably larger than now (desktop ≈ 32–40 px; mobile ≈ 22–28 px).
+
+Section titles (“Règle”, “Exemples”, “Exercices”): desktop ≈ 24–28 px; mobile ≈ 18–22 px.
+
+Body text: desktop ≈ 18–20 px; mobile ≈ 16–18 px. Tight line spacing (snug but not cramped).
+
+Buttons are large with generous padding and clear labels; primary actions are obvious.
+
+4) Flashcard modal ergonomics
+
+Modal fills about 90% of the screen on laptop/desktop; only the content area scrolls.
+
+Keep a sticky header (title + navigation + close) and a sticky footer (audio + “Suivant” or “Marquer comme complété”).
+
+Add a small legend below “Exemples”: “Clique sur les mots soulignés pour tester un remplacement.”
+
+5) Word-replacement interaction (expand)
+
+Words with replacements are underlined and colored. On click:
+
+Show “Essayer avec « … »”, then temporarily swap only that word, highlight the swapped token, and show the short hint “✅ Remplacement possible — bon indice.”
+
+“Revenir à la phrase” brings back the original.
+
+Each occurrence is clickable independently; whole-word matches only.
+
+Keep the existing pairs and ensure they’re present across cards (e.g., est→était, es→étais, sont→étaient, a→avait, ou→ou bien, où→dans quel endroit, ça→cela, sa→ma, son→mon, ce→le, se→me, plus an explanation bubble for ces/ses/c’est/s’est/sais/sait).
+
+6) Make the flashcards more interactive
+
+Add a “Découvrir” micro-interaction in the Rule section (tap to reveal a short tip or counter-example).
+
+Add a tiny progress chip at the top (“Carte 3 / 8”) and confetti or stars on a perfect score.
+
+7) More exercises per card
+
+Each flashcard should include at least 5 short exercises (varied formats), with instant feedback:
+
+QCM (2–3 quick items).
+
+Compléter la phrase: choose the correct homophone.
+
+Glisser-déposer: associer mot → catégorie (verbe/pronom/…).
+
+Relier: phrase ↔ remplacement correct (ex.: son ↔ mon).
+
+Trouve l’intrus: une option n’appartient pas à la catégorie.
+
+Dictée courte (audio) avec un blanc à remplir par l’élève.
+
+After submission, show a score for the card and allow “Refaire” to practice again.
+
+8) Audio polish
+
+Keep play/pause + 0.8× / 1× / 1.2×.
+
+While audio plays, lightly highlight the current sentence. Prevent double-taps from restarting unexpectedly.
+
+9) Accessibility & performance
+
+Clear focus styles and keyboard shortcuts (Esc closes; ←/→ navigate; Space toggles audio).
+
+Good contrast for text on tinted backgrounds.
+
+Optimized images (fast load, no layout shifts) and descriptive alt text.
+
+Acceptance checks
+
+Every example has its own image, with alt text and consistent style.
+
+Colored, underlined target words are visible and clickable; replacement toggle works for each occurrence.
+
+Fonts are significantly larger than the current screenshot and remain readable on mobile.
+
+Each card includes ≥ 5 interactive exercises with instant feedback and a per-card score.
+
+The flashcard modal occupies ~90% of the viewport; only the inner content scrolls.
+
+Home page tiles stay equal size across categories.

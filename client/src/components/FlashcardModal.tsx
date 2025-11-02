@@ -85,7 +85,7 @@ export default function FlashcardModal({
               <ChevronLeft className="w-5 h-5" />
             </Button>
             <div>
-              <h2 className="font-display font-bold text-xl md:text-2xl text-foreground">
+              <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground">
                 {flashcard.title}
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
@@ -122,10 +122,10 @@ export default function FlashcardModal({
         <div className="flex-1 overflow-y-auto p-6 md:p-12 space-y-8">
           {/* Rule Section */}
           <Card className="p-6 bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
-            <h3 className="font-display font-semibold text-lg text-foreground mb-3">
+            <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground mb-3">
               📘 Règle
             </h3>
-            <p className="text-base leading-relaxed text-foreground">
+            <p className="text-base md:text-lg leading-snug text-foreground">
               {flashcard.rule}
             </p>
           </Card>
@@ -133,7 +133,7 @@ export default function FlashcardModal({
           {/* Examples Section */}
           {flashcard.examples.length > 0 && (
             <div className="space-y-4">
-              <h3 className="font-display font-semibold text-xl text-foreground">
+              <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground">
                 📝 Exemples
               </h3>
               
@@ -166,7 +166,7 @@ export default function FlashcardModal({
 
           {/* TTS Controls */}
           <div>
-            <h3 className="font-display font-semibold text-xl text-foreground mb-4">
+            <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground mb-4">
               🔊 Écouter
             </h3>
             <TTSControls text={fullText} ref={ttsControlsRef} />
@@ -175,7 +175,7 @@ export default function FlashcardModal({
           {/* Practice Section */}
           {flashcard.practice.length > 0 && (
             <div className="space-y-6">
-              <h3 className="font-display font-semibold text-xl text-foreground">
+              <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground">
                 ✏️ Pratique
               </h3>
               

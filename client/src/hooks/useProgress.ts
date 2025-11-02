@@ -38,11 +38,8 @@ export function useProgress() {
     mutationFn: async ({ categoryId, flashcardId }: { categoryId: string; flashcardId: string }) => {
       if (isAuthenticated) {
         // Sync to database
-        return await apiRequest("/api/progress/complete", {
-          method: "POST",
-          body: JSON.stringify({ categoryId, flashcardId }),
-          headers: { "Content-Type": "application/json" },
-        });
+        const response = await apiRequest("POST", "/api/progress/complete", { categoryId, flashcardId });
+        return await response.json();
       } else {
         // Save to localStorage
         localProgress.markFlashcardCompleted(categoryId, flashcardId);

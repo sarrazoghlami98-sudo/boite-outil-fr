@@ -1,0 +1,70 @@
+Add-on: inline replacement next to the highlighted word (Homophones)
+
+Scope
+Apply to Homophones examples only. Keep all previous behaviors (clickable, underlined, colored words, bubble hint, restore).
+
+What to do
+
+For each sentence, immediately after the highlighted target word, display the suggested replacement in parentheses, e.g.:
+
+Tu es (étais) mon meilleur ami.
+
+Les joueurs sont (étaient) contents.
+
+Adam a (avait) une balle.
+
+Tu veux du jus ou (ou bien) du lait ?
+
+Où (dans quel endroit) est la souris ?
+
+Le joueur prend son (mon) ballon.
+
+The parentheses label:
+
+Uses the same color family as the category (verbe = vert, déterminant = orange, pronom = bleu, etc.).
+
+Is clickable too (same action as clicking the underlined word).
+
+Has compact size and does not wrap to a new line by itself; keep it glued to the target word.
+
+Interaction rules
+
+First render: show the sentence with the replacement visible in parentheses after the target word.
+
+On click (word or parentheses):
+
+Swap the target with the replacement in the sentence body (the part outside parentheses).
+
+Keep the parentheses visible, still showing the replacement (so the learner sees both forms).
+
+Highlight the swapped token and show the hint: “✅ Remplacement possible — bon indice.”
+
+Click again (or “Revenir à la phrase”): restore the original word; parentheses stay visible.
+
+Whole-word matches only; respect accents and punctuation.
+
+Visual details
+
+Target word: bold, colored, dotted underline.
+
+Parentheses replacement: same color tone, slightly smaller than body text, regular weight.
+
+Do not add extra vertical spacing; ensure sentences remain on one or two lines without awkward breaks.
+
+Edge cases
+
+If the replacement is a phrase (e.g., “dans quel endroit”), still show it in parentheses and allow the same toggle.
+
+For mixed set (ces / ses / c’est / s’est / sais / sait): show both the parentheses form (e.g., c’est (cela est)) and the info bubble (definitions) on click.
+
+Capitalization: keep the original casing of the visible word; the parentheses form can be lower case unless it starts the sentence.
+
+Contractions (ex.: l’a): place the parentheses right after the target token without breaking the apostrophe.
+
+Acceptance checks
+
+Every homophone sentence displays the (replacement) directly after the colored, underlined word.
+
+Clicking either the word or the parentheses toggles the in-sentence swap and shows the hint.
+
+Layout never pushes the parentheses to a separate line on desktop; mobile wraps cleanly with the word.
