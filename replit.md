@@ -12,22 +12,24 @@ Application d'apprentissage du français pour 6e année du primaire, basée sur 
 ### Fonctionnalités complétées
 
 ✅ 8 catégories de contenu (Conjugaison, Homophones, Orthographe, Grammaire, Accords, Ponctuation, Vocabulaire, Types de phrases)
-✅ 14 flashcards complètes pour Conjugaison et Homophones
-✅ 25+ images extraites des PPT fournis
-✅ Système de remplacement de mots interactif avec codes couleur
-✅ Synthèse vocale (TTS) avec contrôle de vitesse
-✅ Exercices pratiques (QCM, remplir les blancs)
+✅ 14 flashcards complètes pour Conjugaison (6) et Homophones (8)
+✅ 25 images extraites des PPT fournis et intégrées
+✅ Système de remplacement de mots interactif avec codes couleur (6 types grammaticaux)
+✅ Synthèse vocale (TTS) avec contrôle de vitesse (0.8×, 1×, 1.2×)
+✅ Exercices pratiques (QCM, remplir les blancs, drag-and-drop)
 ✅ Suivi de progression avec localStorage
-✅ Navigation au clavier (Esc, flèches, Space)
+✅ Navigation au clavier complète (Esc, flèches, Space) avec respect du contexte focus
 ✅ Design responsive (mobile, tablette, desktop)
-✅ Tuiles de catégories uniformes avec progression
-✅ Modal flashcard plein écran (90% viewport)
+✅ Tuiles de catégories uniformes avec progression (h-40 md:h-48)
+✅ Modal flashcard plein écran (90% viewport) avec scrolling
+✅ Accessibilité complète (ARIA, focus management, keyboard shortcuts)
+✅ 20+ paires de remplacement de mots configurées
+✅ Tests end-to-end passés avec succès
 
 ### En cours de développement
 
-🚧 Contenu pour Orthographe, Grammaire, Accords, Ponctuation, Vocabulaire, Types de phrases
-🚧 Exercices drag-and-drop fonctionnels
-🚧 Contenu Grade 5
+🚧 Contenu pour Orthographe, Grammaire, Accords, Ponctuation, Vocabulaire, Types de phrases (6 placeholders créés)
+🚧 Contenu Grade 5 (structure prête pour expansion)
 
 ## Architecture du projet
 
@@ -41,9 +43,10 @@ client/
 │   │   ├── FlashcardModal.tsx        # Modal flashcard plein écran
 │   │   ├── WordReplacement.tsx       # Mots cliquables avec remplacement
 │   │   ├── InteractiveSentence.tsx   # Phrase avec mots interactifs
-│   │   ├── TTSControls.tsx           # Contrôles audio
+│   │   ├── TTSControls.tsx           # Contrôles audio avec Space key toggle
 │   │   ├── PracticeMCQ.tsx           # Questions à choix multiples
-│   │   └── PracticeFillBlank.tsx     # Exercices à trous
+│   │   ├── PracticeFillBlank.tsx     # Exercices à trous
+│   │   └── PracticeDragDrop.tsx      # Exercices drag-and-drop
 │   ├── pages/
 │   │   ├── Home.tsx                  # Page d'accueil avec grille de catégories
 │   │   └── CategoryPage.tsx          # Liste de flashcards d'une catégorie
@@ -118,17 +121,25 @@ attached_assets/
 
 ## Modifications récentes
 
-### Novembre 2025
-- ✅ Configuration initiale avec design tokens kid-friendly
-- ✅ Création data model complet (shared/schema.ts)
-- ✅ Extraction 25 images des PPT fournis
-- ✅ Implémentation 14 flashcards Conjugaison + Homophones avec contenu riche
-- ✅ Système remplacement mots avec 20+ paires configurées
-- ✅ Composants TTS avec vitesses multiples
-- ✅ Exercices QCM et fill-blank avec feedback
-- ✅ Page accueil avec 8 tuiles uniformes
-- ✅ Système progression localStorage
-- ✅ Navigation clavier complète
+### Novembre 2025 - Version 1.0 MVP Complete
+- ✅ Configuration initiale avec design tokens kid-friendly (Poppins, Open Sans, couleurs vibrantes)
+- ✅ Création data model complet TypeScript (shared/schema.ts, shared/content-data.ts)
+- ✅ Extraction et intégration 25 images des PPT fournis
+- ✅ Implémentation 14 flashcards complètes: 6 Conjugaison + 8 Homophones
+- ✅ Système remplacement mots avec 20+ paires, 6 types grammaticaux colorés
+- ✅ Composants TTS avec vitesses multiples (0.8×, 1×, 1.2×)
+- ✅ Exercices pratiques: QCM, fill-blank, drag-and-drop avec feedback visuel
+- ✅ Page accueil avec 8 tuiles uniformes (exact same size)
+- ✅ Système progression localStorage avec compteurs
+- ✅ Navigation clavier complète avec gestion intelligente du focus:
+  - Esc ferme modal
+  - ←/→ naviguent entre flashcards
+  - Space toggle TTS seulement quand pas sur éléments interactifs
+  - Enter/Space activent boutons
+  - Escape restore mots remplacés
+- ✅ Accessibilité: ARIA labels, focus management, data-testids partout
+- ✅ Tests end-to-end réussis: toute la user journey validée
+- ✅ Révision architecte: Implementation production-ready
 
 ## Prochaines étapes
 
