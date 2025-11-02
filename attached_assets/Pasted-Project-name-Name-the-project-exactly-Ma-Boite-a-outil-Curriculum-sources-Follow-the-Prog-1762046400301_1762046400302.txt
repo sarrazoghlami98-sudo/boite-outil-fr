@@ -1,0 +1,53 @@
+Project name
+•	Name the project exactly: Ma Boite a outil.
+Curriculum & sources
+•	Follow the Programme de formation du Québec for 6e année 
+•	Use my uploaded PPTs (conjugaison + homophones) as seed content and expand with new examples and illustrations.
+•	Add more topics pulled from Alloprof’s Grade-6 list (orthographe d’usage, accords, classes de mots, ponctuation, types de phrases, etc.).
+https://www.alloprof.qc.ca/fr/eleves/bv/francais/repertoire-de-revision-6e-annee-du-primaire-f1593
+Home page (mandatory look & behavior)
+•	Show category tiles all the same size, regardless of label length or content, use different colors.
+•	First row tiles (minimum): Conjugaison, Homophones.
+•	Add more same-size tiles for: Orthographe, Grammaire, Accords, Ponctuation, Vocabulaire, Types de phrases (you may include more from Alloprof).
+•	Uniform design: identical width/height, same typography scale, same padding, same border radius; text wraps, never resizes the tile.
+•	Responsive grid: same-size tiles in 2 columns on small screens, 3 on tablets, 4 on laptop/desktop.
+•	Each tile opens a section with flashcards and practice.
+Flashcards & activities (for every topic)
+•	Big, legible modal (covers ~90% of the screen). Only the content area scrolls.
+•	Inside each card:
+1.	Rule (concise),
+2.	2–4 illustrated examples,
+3.	Écouter (TTS) with play/pause + speeds 0.8× / 1× / 1.2×,
+4.	Practice (MCQ, remplir les blancs, glisser-déposer) with instant feedback.
+•	Persist progress locally; show completion checkmarks and “N/total”.
+Word-replacement feature (must-have)
+•	In example sentences, certain words are underlined and clickable.
+•	On click, show “Essayer avec « … »”, temporarily swap the word in the sentence, highlight the swapped token, and display a short hint: “✅ Remplacement possible — bon indice.” Click again (or “Revenir à la phrase”) to restore the original.
+•	Start with these pairs (extendable):
+est → était, es → étais, sont → étaient, a → avait,
+ou → ou bien, où → dans quel endroit (inline hint if swap isn’t natural),
+ça → cela, sa → ma, son → mon, ce → le, se → me,
+and the mixed set ces / ses / c’est / s’est / sais / sait with a small explanatory bubble (e.g., “c’est = cela est”, “s’est = se + est”, “sais/sait = verbe savoir”).
+•	Underline is dotted, slightly offset; color matches grammar category (Verbe=vert, Déterminant=orange, Pronom=bleu, Conjonction=rouge, Adverbe=jaune, Préposition=violet).
+•	Add a small legend below cards: “Clique sur les mots soulignés pour tester un remplacement.”
+Conjugaison (use and expand from my PPT)
+•	Build cards and mini-quizzes for: Présent, Passé composé (accords, auxiliaires, irréguliers), Imparfait (formation/emplois), Plus-que-parfait, Futur simple (radicaux irréguliers), Conditionnel présent.
+•	For each tense: 1 rule card + 3–4 examples + 1 mini-quiz.
+Homophones (seed + expand)
+•	Cards for a/à, ou/où, et/est/es, son/sont, ce/se, ça/sa, la/là/l’a, and ces/ses/c’est/s’est/sais/sait—each with rule, illustrated examples, and the word-replacement interaction.
+Design & accessibility
+•	Friendly, kid-appropriate visuals; generate new, consistent illustrations with alt text.
+•	Clear focus styles; keyboard shortcuts (Esc closes; ←/→ navigate; Space toggles audio).
+•	Mobile-first; fast loading; optimized images.
+Authoring
+•	Centralize content in simple data so we can add Grade-5 later without touching code.
+•	Provide a short README explaining how to add a new card, image, audio, and replacement pair.
+Acceptance checks
+•	Home tiles for all categories are exactly the same size at every breakpoint.
+•	Flashcard modal fills ~90% of screen; only the content area scrolls.
+•	Every underlined word toggles its replacement and restores correctly.
+•	At least 12 working flashcards across Conjugaison + Homophones, 24+ new illustrations, progress saved locally.
+•	No legacy files or layout from the previous project remain.
+•	Kids friendly
+
+
