@@ -8,14 +8,17 @@ interface PracticeMCQProps {
   correctAnswer: string;
   explanation?: string;
   questionId: string;
+  onAnswer: (questionId: string, isCorrect: boolean) => void;
 }
 
-export default function PracticeMCQ({ question, options, correctAnswer, explanation, questionId }: PracticeMCQProps) {
+export default function PracticeMCQ({ question, options, correctAnswer, explanation, questionId, onAnswer }: PracticeMCQProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
 
   const handleSubmit = () => {
     setShowResult(true);
+    const isCorrect = selectedAnswer === correctAnswer;
+    onAnswer(questionId, isCorrect);
   };
 
   const handleReset = () => {

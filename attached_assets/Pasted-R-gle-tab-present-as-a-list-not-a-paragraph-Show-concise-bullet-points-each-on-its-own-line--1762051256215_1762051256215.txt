@@ -1,0 +1,127 @@
+Règle tab — present as a list (not a paragraph)
+
+
+Show concise bullet points, each on its own line, with a small icon chip for the category (Verbe, Déterminant, etc.).
+
+
+Keep to 3–6 bullets max. On desktop, render bullets in two columns to reduce scrolling; single column on mobile.
+
+
+In every bullet, color the target word exactly like the slides and, when helpful, add a mini example right under the bullet (one short line).
+
+
+Include a short “Tests rapides” sub-list (✔️) with the replacement trick (highlight the replacement in yellow).
+
+
+No long sentences; each bullet should be <90 characters.
+
+
+Content model for each card’s Règle list (examples):
+
+
+a / à
+
+
+🟩 a : verbe avoir (3ᵉ pers.).
+✔️ Test : a → avait (jaune) ⇒ verbe.
+
+
+🟪 à : préposition; elle ne change jamais.
+🔹 Ex.: « Amin va à la plage. »
+
+
+
+
+est / es / et
+
+
+🟩 est : verbe être (il/elle/on). ✔️ Test : est → était (jaune).
+
+
+🟩 es : verbe être (tu). ✔️ Test : es → étais (jaune).
+
+
+🔴 et : conjonction (addition). 🔹 Ex.: « Le chien et le chat. »
+
+
+
+
+ce / se
+
+
+🟠 ce : déterminant démonstratif. ✔️ Test : ce → le (jaune).
+
+
+🔵 se : pronom réfléchi. ✔️ Test : se → me/te (jaune).
+
+
+
+
+sont / son
+
+
+🟩 sont : verbe être (ils/elles). ✔️ Test : sont → étaient (jaune).
+
+
+🟠 son : déterminant possessif (sing.). ✔️ Test : son → mon (jaune).
+
+
+
+
+ou / où
+
+
+🔴 ou : conjonction (choix). ✔️ Test : ou → ou bien (jaune).
+
+
+🟨 où : adverbe (lieu/temps). ✔️ Test : où → dans quel endroit (jaune).
+
+
+
+
+la / là / l’a
+
+
+🟠 la : déterminant. ✔️ Test : la → une (jaune).
+
+
+🟨 là : adverbe (endroit).
+
+
+🟢 l’a : le/la + a (verbe avoir). ✔️ Test : l’a → l’avait (jaune).
+
+
+
+
+ces / ses / c’est / s’est / sais / sait (roue)
+
+
+🟠 ces : déterminant démonstratif. ✔️ Test : ces → les (jaune).
+
+
+🟠 ses : déterminant possessif. ✔️ Test : ses → mes (jaune).
+
+
+🟩 c’est : cela + est. ✔️ Test : c’est → cela est (jaune).
+
+
+🔵 s’est : se + est (verbe pronominal). ✔️ Test : s’est → s’était (jaune).
+
+
+🟩 sais / sait : verbe savoir (je/tu) / (il/elle). ✔️ Test : remplacer par savoir (jaune) à l’infinitif.
+
+
+
+
+Accessibility & style
+
+
+Use real <ul><li> lists, not line breaks.
+
+
+Each bullet has a colored token + dotted underline; the yellow test word uses a highlight chip.
+
+
+Keep reading order logical; keyboard focus cycles through bullets.
+
+

@@ -1,0 +1,129 @@
+Ma Boite a outil — Homophones (UI overhaul & logic, v2)
+
+Goal
+Match the slides’ look-and-feel, minimize vertical scrolling, add step-by-step practice, and show only valid replacements. Keep the bigger cards they already made; use the extra space by placing examples side by side.
+
+Tech & structure
+
+React + Vite + TypeScript, Tailwind CSS.
+
+Folders:
+
+/src/data/homophones.ts — cards, examples, exercises, replacement metadata.
+
+/src/components/homophones/:
+
+HomophoneGrid.tsx (list)
+
+CardModal.tsx (no change to size; use existing)
+
+RulePanel.tsx, ExamplesPanel.tsx, PracticePanel.tsx
+
+ExampleItem.tsx, ReplacementToken.tsx, PracticeStepper.tsx, AudioPlayer.tsx
+
+State via Zustand/Context + localStorage.
+
+Key UI rules (align with slides & reduce scrolling)
+
+Tabbed layout inside each card: Règle | Exemples | Pratique (no long scroll).
+
+Examples tab uses the width:
+
+Desktop: responsive grid grid-cols-2 (side-by-side examples), optionally grid-cols-3 on very wide screens.
+
+Mobile: grid-cols-1.
+
+Keep each example compact: image on top (mobile) or left (desktop) and sentence on the side; avoid long captions.
+
+Titles are colorized per slide scheme (multi-color tokens: e.g., a green / à purple).
+
+Category colors (same as slides):
+Verbe #2E7D32 • Déterminant #EF6C00 • Pronom #1565C0 • Conjonction #C62828 • Adverbe #F9A825 • Préposition #6A1B9A.
+
+Interactive tokens: bold, category color, dotted underline, hover tint; accessible focus ring.
+
+Replacement logic (no false suggestions)
+
+In homophones.ts, each example defines:
+
+exact token, candidate replacement, category, and validInContext: true|false.
+
+Show inline parentheses (highlighted yellow) only if validInContext: true.
+Example: Tu **es** (**étais**) mon meilleur ami.
+If false, the token is still clickable for an explanation bubble, but no parentheses render.
+
+Click (word or parentheses) ⇒ swap on-screen token only, show hint “✅ Remplacement possible — bon indice.” Provide a “Revenir à la phrase” control.
+
+Examples layout & assets
+
+Use my images from the slides; place at /public/images/homophones/.
+
+File names mirror the sentence (slug). Examples to seed first:
+
+adam-a-une-balle.png → “Adam a une balle.” (a→avait, inline)
+
+amin-va-a-la-plage.png → “Amin va à la plage.” (préposition, no inline)
+
+tu-es-drole.png → “Tu es drôle.” (es→étais, inline)
+
+les-joueurs-sont-contents.png → “Les joueurs sont contents.” (sont→étaient, inline)
+
+le-joueur-prend-son-ballon.png → “Le joueur prend son ballon.” (son→mon, inline)
+
+tu-veux-du-jus-ou-du-lait.png → “Tu veux du jus ou du lait ?” (ou→ou bien, inline)
+
+ou-est-la-souris.png → “Où est la souris ?” (où→dans quel endroit, inline phrase)
+
+ce-garcon-court-vite.png → “Ce garçon court vite.” (ce→le, inline)
+
+lastronaute-se-prepare.png → “L’astronaute se prépare.” (se→me, inline)
+
+la-souris-est-la.png → “La souris est là.” (adverbe, no inline)
+
+Mixed wheel ces-ses-cest-sest-sais-sait.png with per-slice examples.
+
+Practice (no scrolling; step-by-step)
+
+One question at a time in Pratique tab with a Stepper:
+
+User answers → Vérifier
+
+If correct: show feedback + unlock Question suivante (or auto-advance after 800 ms).
+
+At end: score, Refaire, and Passer à la carte suivante.
+
+Provide ≥ 5 questions per card, randomized across:
+
+QCM (pick the correct homophone)
+
+Fill-in-the-blank
+
+Drag-and-drop word → category
+
+Match phrase ↔ correct replacement
+
+Short dictation (TTS; accent-aware check)
+
+Audio
+
+Web Speech API (fr-CA preferred, fallback fr-FR), speeds: 0.8× / 1× / 1.2×.
+
+Highlight current sentence during playback.
+
+Data model (guidance)
+
+Keep HomophoneCard, ExampleItem, ReplacementSpec, PracticeQuestion types as previously described.
+
+Tokenization must use Unicode word boundaries; treat contractions (l’a) as a single token.
+
+Acceptance checks
+
+Examples appear side-by-side on desktop (2+ columns), minimizing vertical scroll.
+
+Titles and category colors match the slides.
+
+Inline (replacement) appears only when valid, with a yellow highlight; clicking toggles the token and shows a hint.
+
+Practice shows one question at a time with Vérifier → Question suivante flow and explanations.
+
+Audio works with speed control; progress is saved.

@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
-import { X, ChevronLeft, ChevronRight, CheckCircle, Lightbulb, BookOpen, Pencil } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, CheckCircle, Lightbulb, BookOpen, Pencil, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Flashcard } from '@shared/schema';
 import InteractiveSentence from './InteractiveSentence';
 import TTSControls from './TTSControls';
@@ -9,6 +10,7 @@ import PracticeMCQ from './PracticeMCQ';
 import PracticeFillBlank from './PracticeFillBlank';
 import PracticeDragDrop from './PracticeDragDrop';
 import { markFlashcardCompleted, isFlashcardCompleted } from '@/lib/progress';
+import confetti from 'canvas-confetti';
 
 interface FlashcardModalProps {
   flashcard: Flashcard;
@@ -28,8 +30,13 @@ export default function FlashcardModal({
   onNavigate,
 }: FlashcardModalProps) {
   const [practiceCompleted, setPracticeCompleted] = useState(false);
+  const [isDiscoverOpen, setIsDiscoverOpen] = useState(false);
+  const [isMarkingComplete, setIsMarkingComplete] = useState(false);
+  const [practiceResults, setPracticeResults] = useState<Record<string, boolean>>({});
+  const [confettiShown, setConfettiShown] = useState(false);
   const isCompleted = isFlashcardCompleted(categoryId, flashcard.id);
   const ttsControlsRef = useRef<{ handleSpaceKey: () => void }>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -59,9 +66,53 @@ export default function FlashcardModal({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex, totalCards, onClose, onNavigate]);
 
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Reset practice state when flashcard changes
+  useEffect(() => {
+    setPracticeResults({});
+    setConfettiShown(false);
+    setPracticeCompleted(false);
+  }, [flashcard.id]);
+
+  const handlePracticeAnswer = (questionId: string, isCorrect: boolean) => {
+    if (!isCorrect) {
+      setPracticeResults({});
+      setConfettiShown(false);
+      return;
+    }
+    
+    const newResults = { ...practiceResults, [questionId]: isCorrect };
+    setPracticeResults(newResults);
+    
+    const allQuestionIds = flashcard.practice.map(q => q.id);
+    const allCorrect = allQuestionIds.every(id => newResults[id] === true);
+    
+    if (allCorrect && !confettiShown && allQuestionIds.length === Object.keys(newResults).length) {
+      setConfettiShown(true);
+      setTimeout(() => {
+        confetti({
+          particleCount: 150,
+          spread: 90,
+          origin: { y: 0.6 }
+        });
+      }, 300);
+    }
+  };
+
   const handleMarkComplete = () => {
-    markFlashcardCompleted(categoryId, flashcard.id);
-    setPracticeCompleted(true);
+    setIsMarkingComplete(true);
+    timeoutRef.current = setTimeout(() => {
+      markFlashcardCompleted(categoryId, flashcard.id);
+      setPracticeCompleted(true);
+      setIsMarkingComplete(false);
+    }, 300);
   };
 
   const fullText = [
@@ -137,6 +188,21 @@ export default function FlashcardModal({
             <p className="text-base md:text-lg leading-snug text-foreground">
               {flashcard.rule}
             </p>
+            
+            <Collapsible open={isDiscoverOpen} onOpenChange={setIsDiscoverOpen} className="mt-4">
+              <CollapsibleTrigger 
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                data-testid="button-discover-toggle"
+              >
+                <ChevronDown className={`w-4 h-4 transition-transform ${isDiscoverOpen ? 'rotate-180' : ''}`} />
+                <span>Découvrir</span>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-3 p-3 bg-background/50 rounded-md border border-border">
+                <p className="text-sm text-muted-foreground italic" data-testid="text-discover-content">
+                  Astuce: Pratique régulièrement pour maîtriser cette règle!
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
           </Card>
 
           {/* Examples Section */}
@@ -187,6 +253,7 @@ export default function FlashcardModal({
                       correctAnswer={question.correctAnswer as string}
                       explanation={question.explanation}
                       questionId={question.id}
+                      onAnswer={handlePracticeAnswer}
                     />
                   )}
                   {question.type === 'fill-blank' && (
@@ -195,6 +262,7 @@ export default function FlashcardModal({
                       correctAnswer={question.correctAnswer as string}
                       explanation={question.explanation}
                       questionId={question.id}
+                      onAnswer={handlePracticeAnswer}
                     />
                   )}
                   {question.type === 'drag-drop' && question.options && (
@@ -204,6 +272,7 @@ export default function FlashcardModal({
                       correctAnswer={question.correctAnswer as string[]}
                       explanation={question.explanation}
                       questionId={question.id}
+                      onAnswer={handlePracticeAnswer}
                     />
                   )}
                 </Card>
@@ -226,10 +295,11 @@ export default function FlashcardModal({
                 onClick={handleMarkComplete}
                 className="w-full"
                 size="lg"
+                disabled={isMarkingComplete}
                 data-testid="button-mark-complete"
               >
-                <CheckCircle className="w-5 h-5 mr-2" />
-                Marquer comme complété
+                <CheckCircle className={`w-5 h-5 mr-2 ${isMarkingComplete ? 'animate-spin' : ''}`} />
+                {isMarkingComplete ? 'En cours...' : 'Marquer comme complété'}
               </Button>
             )}
           </div>

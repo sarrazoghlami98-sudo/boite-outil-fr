@@ -8,14 +8,17 @@ interface PracticeFillBlankProps {
   correctAnswer: string;
   explanation?: string;
   questionId: string;
+  onAnswer: (questionId: string, isCorrect: boolean) => void;
 }
 
-export default function PracticeFillBlank({ question, correctAnswer, explanation, questionId }: PracticeFillBlankProps) {
+export default function PracticeFillBlank({ question, correctAnswer, explanation, questionId, onAnswer }: PracticeFillBlankProps) {
   const [answer, setAnswer] = useState('');
   const [showResult, setShowResult] = useState(false);
 
   const handleSubmit = () => {
     setShowResult(true);
+    const isCorrect = normalizeText(answer) === normalizeText(correctAnswer);
+    onAnswer(questionId, isCorrect);
   };
 
   const handleReset = () => {

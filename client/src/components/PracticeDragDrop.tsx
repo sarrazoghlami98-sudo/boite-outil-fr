@@ -8,6 +8,7 @@ interface PracticeDragDropProps {
   correctAnswer: string[];
   explanation?: string;
   questionId: string;
+  onAnswer: (questionId: string, isCorrect: boolean) => void;
 }
 
 export default function PracticeDragDrop({
@@ -15,7 +16,8 @@ export default function PracticeDragDrop({
   options,
   correctAnswer,
   explanation,
-  questionId
+  questionId,
+  onAnswer
 }: PracticeDragDropProps) {
   const [userAnswer, setUserAnswer] = useState<string[]>([]);
   const [availableOptions, setAvailableOptions] = useState<string[]>(options);
@@ -79,6 +81,8 @@ export default function PracticeDragDrop({
 
   const handleSubmit = () => {
     setShowResult(true);
+    const isCorrect = JSON.stringify(userAnswer) === JSON.stringify(correctAnswer);
+    onAnswer(questionId, isCorrect);
   };
 
   const handleReset = () => {

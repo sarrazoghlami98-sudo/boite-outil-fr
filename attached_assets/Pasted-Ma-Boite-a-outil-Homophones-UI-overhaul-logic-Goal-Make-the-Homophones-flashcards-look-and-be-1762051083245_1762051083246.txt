@@ -1,0 +1,235 @@
+Ma Boite a outil — Homophones (UI overhaul & logic)
+
+Goal
+Make the Homophones flashcards look and behave like the slides I provided. Reduce scrolling (stepper/tabs), add per-question practice flow, show only valid replacements, and color everything per our scheme.
+
+Tech stack & project structure
+
+React + Vite + TypeScript (new app if needed), Tailwind CSS for styling.
+
+Folder structure:
+
+/src/data/homophones.ts (cards + examples + exercises + replacement metadata)
+
+/src/components/homophones/:
+
+HomophoneGrid.tsx (section list)
+
+CardModal.tsx (90–95% viewport modal, portal)
+
+RulePanel.tsx, ExamplesPanel.tsx, PracticePanel.tsx
+
+ExampleItem.tsx (image + sentence row)
+
+ReplacementToken.tsx (clickable underlined token + inline parenthesis)
+
+PracticeStepper.tsx (question → verify → next)
+
+AudioPlayer.tsx (Web Speech API, fr-CA or fr-FR)
+
+State: use Zustand or React Context to store current card, example toggles, quiz state, progress in localStorage.
+
+Visual spec (match the slides)
+
+Title of each card uses multi-color tokens, e.g. a / à (a in green, à in purple). Same for est / es / et, son / sont, etc.
+
+Card modal size: max-w-[1100px], w-[92vw], h-[92vh], rounded 2xl, soft shadow. Only the content area scrolls.
+
+Section layout inside the modal uses a 3-tab segmented control (no long scroll):
+
+Règle | Exemples | Pratique
+
+Each tab fits one screen. On mobile, swipable.
+
+Examples: each row = image (left) + sentence (right) on desktop; stacked on mobile.
+
+Images have rounded corners, soft shadow, and alt text.
+
+Use my assets from the slides. Place them in /public/images/homophones/.
+
+Image file names mirror the sentence (slug form). Example ➜ sentence: Les joueurs sont contents. ⇒ image: /images/homophones/les-joueurs-sont-contents.png.
+
+Color coding (same as slides):
+
+Verbe #2E7D32 (green)
+
+Déterminant #EF6C00 (orange)
+
+Pronom #1565C0 (blue)
+
+Conjonction #C62828 (red)
+
+Adverbe #F9A825 (yellow)
+
+Préposition #6A1B9A (purple)
+
+Interactive tokens:
+
+Bold, category color, dotted underline, cursor pointer.
+
+On hover/focus: light tint background (10% of color).
+
+Inline replacement (when valid for the context): show in parentheses with yellow highlight background (bg-[#FFF3B0]), same category color for text, e.g.
+Tu **es** (**étais**) mon meilleur ami.
+Parentheses are clickable and toggle the swap too.
+
+Replacement logic (no false suggestions)
+
+In /src/data/homophones.ts, each example sentence defines exact tokens and a replacement with validInContext: true|false.
+
+Show inline (parentheses) only when validInContext: true.
+If false, keep the token clickable (for explanation popup) but do not render the parentheses.
+
+Tokenization uses Unicode word boundaries to avoid partial matches:
+Regex example: /\b(es|est|sont|a|ou|où|ce|se|sa|ça|son)\b/u
+
+Contractions (l’a) are defined as tokens with attached apostrophe; treat them as one unit.
+
+On click:
+
+Temporarily replace the on-screen token only (do not mutate the source text).
+
+Highlight the swapped token (subtle glow) and show a small hint badge below the sentence:
+✅ Remplacement possible — bon indice.
+
+“Revenir à la phrase” restores the original.
+
+Reduce scrolling (stepper UX)
+
+Règle tab: compact card with 1–2 lines + “Astuce” collapsible.
+
+Exemples tab: paginate examples (2 per page). Use left/right arrows or swipe.
+
+Pratique tab: step-by-step questions; no scrolling. Show 1 question at a time:
+
+user answers;
+
+Vérifier → instant feedback;
+
+if correct, unlock Question suivante (or auto-advance after 800 ms);
+
+at the end: score, “Refaire”, and “Passer à la carte suivante”.
+
+Practice formats (≥ 5 per card, randomized)
+
+QCM: choose among homophones.
+
+Compléter la phrase: fill blank with correct form.
+
+Glisser-déposer: mot → catégorie (verbe/pronom/…).
+
+Relier: phrase ↔ remplacement correct (mon/ma/cela est/…).
+
+Dictée courte: play TTS, user types the missing word; accent-aware check.
+
+Every question stores isCorrect and shows a one-line explanation pulled from the rule.
+
+Audio (better narration)
+
+Use Web Speech API; prefer fr-CA ⇒ fallback fr-FR.
+
+Provide 0.8× / 1× / 1.2× speeds, play/pause, and highlight current sentence.
+
+Data model (homophones.ts — example)
+export type Category = 'verbe'|'determinant'|'pronom'|'conjonction'|'adverbe'|'preposition';
+
+export interface ReplacementSpec {
+  original: string;           // "es"
+  replacement: string;        // "étais"
+  category: Category;         // 'verbe'
+  validInContext: boolean;    // true → show (replacement) inline
+}
+
+export interface ExampleItem {
+  id: string;
+  sentence: string;           // "Tu es mon meilleur ami."
+  image: string;              // "/images/homophones/tu-es-mon-meilleur-ami.png"
+  tokens: ReplacementSpec[];  // usually one per sentence
+  explanation?: string;       // "C'est le verbe être avec 'tu'."
+}
+
+export interface PracticeQuestion {
+  type: 'qcm'|'fill'|'drag'|'match'|'dictation';
+  prompt: string;
+  options?: string[];
+  answer: string|string[];
+  explain: string;            // displayed after Vérifier
+}
+
+export interface HomophoneCard {
+  slug: string;               // "est-es-et"
+  titleParts: {text: string;color: string;}[]; // [{text:"est",color:green}, ...]
+  rule: string;
+  examples: ExampleItem[];
+  practice: PracticeQuestion[];
+}
+
+Token component behavior (ReplacementToken)
+
+Props: text, replacement, categoryColor, validInContext.
+
+Render:
+
+Always render colored, underlined text.
+
+If validInContext, render (replacement) immediately after, with yellow background and same color text.
+
+Handlers:
+
+onClick toggles swapped view (only for this token instance).
+
+Fires announce() (ARIA live region) for screen readers.
+
+Colors & title styling
+
+Title renders each homophone in its color: e.g.
+a (green) / à (purple), ou (red) / où (yellow), etc.
+
+Subtitle badges (e.g., “Verbe”, “Pronom”) use the same color tint.
+
+Use the slide examples & images
+
+Seed at least these cards using sentences and images from my slides (names below).
+Images live at /public/images/homophones/ and should match the sentence slug:
+
+adam-a-une-balle.png ⇢ “Adam a une balle.” (a→avait, verbe, valid inline)
+
+amin-va-a-la-plage.png ⇢ “Amin va à la plage.” (préposition, no inline replacement)
+
+tu-es-drole.png ⇢ “Tu es drôle.” (es→étais, verbe, valid inline)
+
+les-joueurs-sont-contents.png ⇢ “Les joueurs sont contents.” (sont→étaient, inline)
+
+le-joueur-prend-son-ballon.png ⇢ “Le joueur prend son ballon.” (son→mon, déterminant, inline)
+
+tu-veux-du-jus-ou-du-lait.png ⇢ “Tu veux du jus ou du lait ?” (ou→ou bien, conjonction, inline)
+
+ou-est-la-souris.png ⇢ “Où est la souris ?” (où→dans quel endroit, adverbe, inline phrase)
+
+ce-garcon-court-vite.png ⇢ “Ce garçon court vite.” (ce→le, déterminant, inline)
+
+lastronaute-se-prepare.png ⇢ “L’astronaute se prépare.” (se→me, pronom, inline)
+
+la-souris-est-la.png ⇢ “La souris est là.” (adverbe, no inline replacement)
+
+le-chat-la-attrapee.png ⇢ “Le chat l’a attrapée.” (l’a = le/la + a, explain bubble, no inline)
+
+Mixed wheel: ces-ses-cest-sest-sais-sait.png ⇢ examples per slice, with info bubbles.
+
+Acceptance checks
+
+No long scroll inside a card (tabs + pagination).
+
+Each example shows a matching image and colored, underlined token.
+
+Inline (replacement) in yellow appears only when validInContext: true.
+
+Clicking token or parentheses toggles the on-screen swap + shows hint and can restore.
+
+Practice tab offers ≥ 5 questions, one at a time, with Vérifier → Next gating.
+
+Titles and badges use the same colors as the slides.
+
+Audio narration is available on each card with speed control.
+
+Progress is saved; confetti on completion.
