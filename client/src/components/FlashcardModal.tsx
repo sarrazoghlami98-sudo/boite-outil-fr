@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { X, ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, CheckCircle, Lightbulb, BookOpen, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Flashcard } from '@shared/schema';
@@ -71,50 +71,58 @@ export default function FlashcardModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="w-full max-w-4xl h-[90vh] bg-background rounded-xl shadow-2xl flex flex-col overflow-hidden">
-        {/* Header - Fixed */}
-        <div className="flex items-center justify-between p-4 md:p-6 border-b border-border bg-card">
-          <div className="flex items-center gap-4">
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => currentIndex > 0 && onNavigate('prev')}
-              disabled={currentIndex === 0}
-              data-testid="button-prev-flashcard"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </Button>
-            <div>
-              <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground">
-                {flashcard.title}
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Carte {currentIndex + 1} / {totalCards}
-              </p>
+      <div className="w-[90vw] h-[90vh] bg-background rounded-xl shadow-2xl flex flex-col overflow-hidden">
+        {/* Header - Sticky */}
+        <div className="sticky top-0 z-10 bg-card border-b border-border">
+          <div className="flex items-center justify-between p-4 md:p-6">
+            <div className="flex items-center gap-4">
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => currentIndex > 0 && onNavigate('prev')}
+                disabled={currentIndex === 0}
+                data-testid="button-prev-flashcard"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </Button>
+              <div className="text-center flex-1">
+                <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground">
+                  {flashcard.title}
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Carte {currentIndex + 1} / {totalCards}
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              {isCompleted && (
+                <CheckCircle className="w-6 h-6 text-green-600" data-testid="icon-flashcard-completed" />
+              )}
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => currentIndex < totalCards - 1 && onNavigate('next')}
+                disabled={currentIndex === totalCards - 1}
+                data-testid="button-next-flashcard"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={onClose}
+                data-testid="button-close-modal"
+              >
+                <X className="w-5 h-5" />
+              </Button>
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
-            {isCompleted && (
-              <CheckCircle className="w-6 h-6 text-green-600" data-testid="icon-flashcard-completed" />
-            )}
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => currentIndex < totalCards - 1 && onNavigate('next')}
-              disabled={currentIndex === totalCards - 1}
-              data-testid="button-next-flashcard"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={onClose}
-              data-testid="button-close-modal"
-            >
-              <X className="w-5 h-5" />
-            </Button>
+          {/* Legend text */}
+          <div className="px-4 md:px-6 pb-4 text-sm text-muted-foreground italic flex items-center gap-2">
+            <Lightbulb className="w-4 h-4" />
+            <span>Clique sur les mots soulignés pour voir les remplacements</span>
           </div>
         </div>
 
@@ -122,8 +130,9 @@ export default function FlashcardModal({
         <div className="flex-1 overflow-y-auto p-6 md:p-12 space-y-8">
           {/* Rule Section */}
           <Card className="p-6 bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
-            <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground mb-3">
-              📘 Règle
+            <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground mb-3 flex items-center gap-2">
+              <BookOpen className="w-5 h-5" />
+              <span>Règle</span>
             </h3>
             <p className="text-base md:text-lg leading-snug text-foreground">
               {flashcard.rule}
@@ -133,8 +142,9 @@ export default function FlashcardModal({
           {/* Examples Section */}
           {flashcard.examples.length > 0 && (
             <div className="space-y-4">
-              <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground">
-                📝 Exemples
+              <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground flex items-center gap-2">
+                <Pencil className="w-5 h-5" />
+                <span>Exemples</span>
               </h3>
               
               {flashcard.examples.map((example, idx) => (
@@ -152,31 +162,20 @@ export default function FlashcardModal({
                   <InteractiveSentence
                     sentence={example.sentence}
                     replacements={example.replacements}
+                    categoryId={categoryId}
                   />
                 </Card>
               ))}
 
-              {flashcard.examples.some(ex => ex.replacements && ex.replacements.length > 0) && (
-                <div className="text-xs text-muted-foreground italic border-l-2 border-primary pl-3">
-                  💡 Clique sur les mots soulignés pour tester un remplacement.
-                </div>
-              )}
             </div>
           )}
-
-          {/* TTS Controls */}
-          <div>
-            <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground mb-4">
-              🔊 Écouter
-            </h3>
-            <TTSControls text={fullText} ref={ttsControlsRef} />
-          </div>
 
           {/* Practice Section */}
           {flashcard.practice.length > 0 && (
             <div className="space-y-6">
-              <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground">
-                ✏️ Pratique
+              <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground flex items-center gap-2">
+                <Pencil className="w-5 h-5" />
+                <span>Pratique</span>
               </h3>
               
               {flashcard.practice.map((question) => (
@@ -213,20 +212,28 @@ export default function FlashcardModal({
           )}
         </div>
 
-        {/* Footer - Fixed */}
-        {!isCompleted && (
-          <div className="p-4 md:p-6 border-t border-border bg-card">
-            <Button
-              onClick={handleMarkComplete}
-              className="w-full"
-              size="lg"
-              data-testid="button-mark-complete"
-            >
-              <CheckCircle className="w-5 h-5 mr-2" />
-              Marquer comme complété
-            </Button>
+        {/* Footer - Sticky */}
+        <div className="sticky bottom-0 z-10 border-t border-border bg-card">
+          <div className="p-4 md:p-6 space-y-4">
+            {/* TTS Controls - Centered */}
+            <div className="flex justify-center">
+              <TTSControls text={fullText} ref={ttsControlsRef} />
+            </div>
+            
+            {/* Mark Complete Button */}
+            {!isCompleted && (
+              <Button
+                onClick={handleMarkComplete}
+                className="w-full"
+                size="lg"
+                data-testid="button-mark-complete"
+              >
+                <CheckCircle className="w-5 h-5 mr-2" />
+                Marquer comme complété
+              </Button>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

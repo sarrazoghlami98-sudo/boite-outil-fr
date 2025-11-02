@@ -6,9 +6,10 @@ interface WordReplacementProps {
   text: string;
   replacement: WordReplacementType;
   index: number;
+  categoryId?: string;
 }
 
-export default function WordReplacement({ text, replacement, index }: WordReplacementProps) {
+export default function WordReplacement({ text, replacement, index, categoryId }: WordReplacementProps) {
   const [isSwapped, setIsSwapped] = useState(false);
   const restoreButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -85,6 +86,59 @@ export default function WordReplacement({ text, replacement, index }: WordReplac
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isSwapped]);
 
+  const isHomophones = categoryId === 'homophones';
+
+  if (isHomophones) {
+    return (
+      <span className="inline-block relative">
+        <button
+          onClick={handleToggle}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleToggle();
+            }
+          }}
+          className={`border-b-2 border-dotted ${styles.borderColor} ${styles.textColor} font-bold cursor-pointer hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 ${
+            isSwapped ? `${styles.bgColor} px-1 rounded` : ''
+          }`}
+          data-testid={`button-word-replacement-${index}`}
+          aria-label={`Remplacer ${text} par ${replacement.replacement}`}
+          aria-expanded={isSwapped}
+        >
+          {isSwapped ? replacement.replacement : text}
+          <span className={`${styles.textColor} ml-1`}>
+            ({isSwapped ? text : replacement.replacement})
+          </span>
+        </button>
+        
+        {isSwapped && (
+          <span
+            className="absolute left-0 top-full mt-1 z-50 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-2 text-xs whitespace-nowrap border border-border flex flex-col gap-1"
+            role="tooltip"
+          >
+            <span className="text-foreground" data-testid={`text-replacement-hint-${index}`}>
+              {replacement.hint}
+            </span>
+            <span className={`${styles.textColor} font-semibold text-[10px]`} data-testid={`text-grammar-label-${index}`}>
+              {label}
+            </span>
+            <Button
+              ref={restoreButtonRef}
+              size="sm"
+              variant="outline"
+              onClick={handleToggle}
+              className="mt-1"
+              data-testid={`button-restore-${index}`}
+            >
+              Revenir à la phrase
+            </Button>
+          </span>
+        )}
+      </span>
+    );
+  }
+
   return (
     <span className="inline-block relative">
       <button
@@ -121,7 +175,7 @@ export default function WordReplacement({ text, replacement, index }: WordReplac
             size="sm"
             variant="outline"
             onClick={handleToggle}
-            className="text-xs h-6 mt-1"
+            className="mt-1"
             data-testid={`button-restore-${index}`}
           >
             Revenir à la phrase

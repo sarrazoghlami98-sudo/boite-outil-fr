@@ -4,9 +4,10 @@ import WordReplacement from './WordReplacement';
 interface InteractiveSentenceProps {
   sentence: string;
   replacements?: WordReplacementType[];
+  categoryId?: string;
 }
 
-export default function InteractiveSentence({ sentence, replacements }: InteractiveSentenceProps) {
+export default function InteractiveSentence({ sentence, replacements, categoryId }: InteractiveSentenceProps) {
   if (!replacements || replacements.length === 0) {
     return <div className="text-base md:text-lg leading-snug text-foreground">{sentence}</div>;
   }
@@ -30,6 +31,7 @@ export default function InteractiveSentence({ sentence, replacements }: Interact
           text={replacement.original}
           replacement={replacement}
           index={idx}
+          categoryId={categoryId}
         />
       );
       
