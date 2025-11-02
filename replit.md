@@ -15,6 +15,7 @@ Application d'apprentissage du français pour 6e année du primaire, basée sur 
 ✅ 14 flashcards complètes pour Conjugaison (6) et Homophones (8)
 ✅ 25 images extraites des PPT fournis et intégrées
 ✅ Système de remplacement de mots interactif avec codes couleur (6 types grammaticaux)
+✅ Titres homophones colorés par type grammatical (couleurs exactes des slides)
 ✅ Synthèse vocale (TTS) avec contrôle de vitesse (0.8×, 1×, 1.2×)
 ✅ Exercices pratiques (QCM, remplir les blancs, drag-and-drop)
 ✅ Suivi de progression avec localStorage
@@ -85,13 +86,13 @@ attached_assets/
 - Vocabulaire: Indigo (#6366F1)
 - Types de phrases: Rouge (#EF4444)
 
-**Couleurs grammaticales** (remplacements):
-- Verbe: Vert
-- Déterminant: Orange
-- Pronom: Bleu
-- Conjonction: Rouge
-- Adverbe: Jaune
-- Préposition: Violet
+**Couleurs grammaticales** (remplacements et titres homophones - exactes des slides):
+- Verbe: Vert #2E7D32
+- Déterminant: Orange #EF6C00
+- Pronom: Bleu #1565C0
+- Conjonction: Rouge #C62828
+- Adverbe: Jaune #F9A825
+- Préposition: Violet #6A1B9A
 
 ## Préférences utilisateur
 
@@ -140,6 +141,16 @@ attached_assets/
 - ✅ Accessibilité: ARIA labels, focus management, data-testids partout
 - ✅ Tests end-to-end réussis: toute la user journey validée
 - ✅ Révision architecte: Implementation production-ready
+
+### Novembre 2025 - Titres homophones colorés
+- ✅ Extension schema avec TitlePart pour titres segmentés par type grammatical
+- ✅ Couleurs CSS exactes des slides PowerPoint (#2E7D32 verbe, #EF6C00 déterminant, etc.)
+- ✅ FlashcardModal render titres colorés: "a / à" → a (vert) / à (violet)
+- ✅ Support 8 flashcards homophones avec titleParts configurés
+- ✅ Fallback gracieux si titleParts absent (conjugaison, etc.)
+- ✅ Responsive flex-wrap, ARIA label lecture texte plain
+- ✅ Tests e2e validés: couleurs RGB computées matchent variables CSS
+- ✅ Révision architecte: clean, type-safe, production-ready
 
 ## Prochaines étapes
 

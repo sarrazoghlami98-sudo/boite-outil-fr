@@ -76,13 +76,13 @@
   --chart-4: 25 95% 53%;
   --chart-5: 280 81% 60%;
 
-  /* Grammar type colors for word replacements */
-  --grammar-verbe: 142 71% 45%;
-  --grammar-determinant: 25 95% 53%;
-  --grammar-pronom: 221 83% 53%;
-  --grammar-conjonction: 0 84% 60%;
-  --grammar-adverbe: 45 93% 47%;
-  --grammar-preposition: 271 81% 56%;
+  /* Grammar type colors for word replacements and homophone titles - exact slide colors */
+  --grammar-verbe: 136 57% 36%;        /* #2E7D32 green */
+  --grammar-determinant: 27 100% 47%;   /* #EF6C00 orange */
+  --grammar-pronom: 211 81% 43%;        /* #1565C0 blue */
+  --grammar-conjonction: 357 68% 47%;   /* #C62828 red */
+  --grammar-adverbe: 45 96% 57%;        /* #F9A825 yellow */
+  --grammar-preposition: 277 70% 34%;   /* #6A1B9A purple */
 
   --font-sans: 'Open Sans', sans-serif;
   --font-display: 'Poppins', sans-serif;
@@ -203,13 +203,13 @@
   --chart-4: 25 95% 58%;
   --chart-5: 280 91% 65%;
 
-  /* Grammar type colors for word replacements */
-  --grammar-verbe: 142 71% 45%;
-  --grammar-determinant: 25 95% 53%;
-  --grammar-pronom: 221 83% 53%;
-  --grammar-conjonction: 0 84% 60%;
-  --grammar-adverbe: 45 93% 47%;
-  --grammar-preposition: 271 81% 56%;
+  /* Grammar type colors for word replacements and homophone titles - exact slide colors */
+  --grammar-verbe: 136 57% 36%;        /* #2E7D32 green */
+  --grammar-determinant: 27 100% 47%;   /* #EF6C00 orange */
+  --grammar-pronom: 211 81% 43%;        /* #1565C0 blue */
+  --grammar-conjonction: 357 68% 47%;   /* #C62828 red */
+  --grammar-adverbe: 45 96% 57%;        /* #F9A825 yellow */
+  --grammar-preposition: 277 70% 34%;   /* #6A1B9A purple */
 
   --shadow-2xs: 0px 2px 0px 0px hsl(240 6% 0% / 0.15);
   --shadow-xs: 0px 2px 0px 0px hsl(240 6% 0% / 0.20);

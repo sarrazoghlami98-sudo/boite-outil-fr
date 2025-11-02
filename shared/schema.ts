@@ -215,10 +215,19 @@ export const practiceQuestionSchema = z.object({
 
 export type PracticeQuestion = z.infer<typeof practiceQuestionSchema>;
 
+// Title part for color-coded homophone titles
+export const titlePartSchema = z.object({
+  text: z.string(),
+  grammarType: z.enum(['verbe', 'determinant', 'pronom', 'conjonction', 'adverbe', 'preposition']).optional(),
+});
+
+export type TitlePart = z.infer<typeof titlePartSchema>;
+
 // Flashcard schema
 export const flashcardSchema = z.object({
   id: z.string(),
   title: z.string(),
+  titleParts: z.array(titlePartSchema).optional(), // For color-coded titles (homophones)
   rule: z.string(),
   examples: z.array(exampleSchema),
   practice: z.array(practiceQuestionSchema),

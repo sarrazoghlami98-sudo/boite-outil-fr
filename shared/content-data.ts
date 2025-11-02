@@ -249,6 +249,11 @@ export const categories: Category[] = [
       {
         id: 'homo-a-a',
         title: 'a / à',
+        titleParts: [
+          { text: 'a', grammarType: 'verbe' },
+          { text: ' / ' },
+          { text: 'à', grammarType: 'preposition' }
+        ],
         rule: '« a » est le verbe avoir au présent (3e personne). On peut le remplacer par « avait ». « à » est une préposition, elle ne change jamais.',
         examples: [
           {
@@ -294,6 +299,11 @@ export const categories: Category[] = [
       {
         id: 'homo-ou-ou',
         title: 'ou / où',
+        titleParts: [
+          { text: 'ou', grammarType: 'conjonction' },
+          { text: ' / ' },
+          { text: 'où', grammarType: 'pronom' }
+        ],
         rule: '« ou » est une conjonction (choix). On peut le remplacer par « ou bien ». « où » indique un lieu ou un moment, il a un accent.',
         examples: [
           {
@@ -339,6 +349,13 @@ export const categories: Category[] = [
       {
         id: 'homo-et-est-es',
         title: 'et / est / es',
+        titleParts: [
+          { text: 'et', grammarType: 'conjonction' },
+          { text: ' / ' },
+          { text: 'est', grammarType: 'verbe' },
+          { text: ' / ' },
+          { text: 'es', grammarType: 'verbe' }
+        ],
         rule: '« et » est une conjonction (addition). « est » et « es » sont le verbe être au présent. On peut les remplacer par « était » et « étais ».',
         examples: [
           {
@@ -398,6 +415,11 @@ export const categories: Category[] = [
       {
         id: 'homo-son-sont',
         title: 'son / sont',
+        titleParts: [
+          { text: 'son', grammarType: 'determinant' },
+          { text: ' / ' },
+          { text: 'sont', grammarType: 'verbe' }
+        ],
         rule: '« son » est un déterminant possessif (comme « mon », « ton »). « sont » est le verbe être au présent (3e personne du pluriel). On peut le remplacer par « étaient ».',
         examples: [
           {
@@ -443,6 +465,11 @@ export const categories: Category[] = [
       {
         id: 'homo-ce-se',
         title: 'ce / se',
+        titleParts: [
+          { text: 'ce', grammarType: 'determinant' },
+          { text: ' / ' },
+          { text: 'se', grammarType: 'pronom' }
+        ],
         rule: '« ce » est un déterminant démonstratif (comme « le », « cette »). « se » est un pronom réfléchi, utilisé avec les verbes pronominaux.',
         examples: [
           {
@@ -484,6 +511,11 @@ export const categories: Category[] = [
       {
         id: 'homo-ca-sa',
         title: 'ça / sa',
+        titleParts: [
+          { text: 'ça', grammarType: 'pronom' },
+          { text: ' / ' },
+          { text: 'sa', grammarType: 'determinant' }
+        ],
         rule: '« ça » est un pronom démonstratif (abréviation de « cela »). « sa » est un déterminant possessif (féminin de « son »).',
         examples: [
           {
@@ -525,6 +557,13 @@ export const categories: Category[] = [
       {
         id: 'homo-la-la-la',
         title: 'la / là / l\'a',
+        titleParts: [
+          { text: 'la', grammarType: 'determinant' },
+          { text: ' / ' },
+          { text: 'là', grammarType: 'adverbe' },
+          { text: ' / ' },
+          { text: 'l\'a', grammarType: 'verbe' }
+        ],
         rule: '« la » est un déterminant ou pronom. « là » indique un lieu (a un accent). « l\'a » = le/la + a (verbe avoir), on peut dire « l\'avait ».',
         examples: [
           {
@@ -578,6 +617,19 @@ export const categories: Category[] = [
       {
         id: 'homo-ces-ses-cest',
         title: 'ces / ses / c\'est / s\'est / sais / sait',
+        titleParts: [
+          { text: 'ces', grammarType: 'determinant' },
+          { text: ' / ' },
+          { text: 'ses', grammarType: 'determinant' },
+          { text: ' / ' },
+          { text: 'c\'est', grammarType: 'pronom' },
+          { text: ' / ' },
+          { text: 's\'est', grammarType: 'verbe' },
+          { text: ' / ' },
+          { text: 'sais', grammarType: 'verbe' },
+          { text: ' / ' },
+          { text: 'sait', grammarType: 'verbe' }
+        ],
         rule: '« ces » et « ses » sont des déterminants (pluriel de « ce » et « son »). « c\'est » = cela est. « s\'est » = se + est (verbe pronominal). « sais/sait » = verbe savoir.',
         examples: [
           {

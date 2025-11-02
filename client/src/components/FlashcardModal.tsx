@@ -3,7 +3,7 @@ import { X, ChevronLeft, ChevronRight, CheckCircle, Lightbulb, BookOpen, Pencil,
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Flashcard } from '@shared/schema';
+import { Flashcard, GrammarCategory } from '@shared/schema';
 import InteractiveSentence from './InteractiveSentence';
 import TTSControls from './TTSControls';
 import PracticeMCQ from './PracticeMCQ';
@@ -11,6 +11,15 @@ import PracticeFillBlank from './PracticeFillBlank';
 import PracticeDragDrop from './PracticeDragDrop';
 import { markFlashcardCompleted, isFlashcardCompleted } from '@/lib/progress';
 import confetti from 'canvas-confetti';
+
+const grammarColorClasses: Record<GrammarCategory, string> = {
+  'verbe': 'text-[hsl(var(--grammar-verbe))]',
+  'determinant': 'text-[hsl(var(--grammar-determinant))]',
+  'pronom': 'text-[hsl(var(--grammar-pronom))]',
+  'conjonction': 'text-[hsl(var(--grammar-conjonction))]',
+  'adverbe': 'text-[hsl(var(--grammar-adverbe))]',
+  'preposition': 'text-[hsl(var(--grammar-preposition))]',
+};
 
 interface FlashcardModalProps {
   flashcard: Flashcard;
@@ -140,8 +149,23 @@ export default function FlashcardModal({
                 <ChevronLeft className="w-5 h-5" />
               </Button>
               <div className="text-center flex-1">
-                <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground">
-                  {flashcard.title}
+                <h2 
+                  className="font-display font-bold text-2xl md:text-3xl lg:text-4xl text-foreground flex flex-wrap items-center justify-center gap-1 leading-tight"
+                  aria-label={flashcard.title}
+                >
+                  {flashcard.titleParts ? (
+                    flashcard.titleParts.map((part, idx) => (
+                      <span
+                        key={idx}
+                        className={part.grammarType ? grammarColorClasses[part.grammarType] : 'text-muted-foreground'}
+                        data-testid={part.grammarType ? `title-part-${part.grammarType}-${idx}` : `title-separator-${idx}`}
+                      >
+                        {part.text}
+                      </span>
+                    ))
+                  ) : (
+                    flashcard.title
+                  )}
                 </h2>
                 <p className="text-sm text-muted-foreground mt-1" role="status" aria-live="polite">
                   Carte {currentIndex + 1} / {totalCards}
