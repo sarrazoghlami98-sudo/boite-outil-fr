@@ -94,12 +94,12 @@ export default function PracticeDragDrop({
   const isCorrect = JSON.stringify(userAnswer) === JSON.stringify(correctAnswer);
 
   return (
-    <div className="space-y-4">
-      <p className="text-lg font-medium text-foreground">{question}</p>
+    <div className="space-y-4" role="group" aria-labelledby={`dragdrop-question-${questionId}`}>
+      <p className="text-lg font-medium text-foreground" id={`dragdrop-question-${questionId}`}>{question}</p>
 
       {/* Drop Zone - User's Answer */}
       <div>
-        <label className="text-sm font-medium text-muted-foreground mb-2 block">
+        <label className="text-sm font-medium text-muted-foreground mb-2 block" id={`answer-zone-label-${questionId}`}>
           Ta réponse:
         </label>
         <div
@@ -113,9 +113,12 @@ export default function PracticeDragDrop({
           onDragOver={handleDragOver}
           onDrop={(e) => handleDropToAnswer(e)}
           data-testid={`dropzone-answer-${questionId}`}
+          role="region"
+          aria-labelledby={`answer-zone-label-${questionId}`}
+          aria-describedby={`answer-instructions-${questionId}`}
         >
           {userAnswer.length === 0 ? (
-            <p className="text-muted-foreground text-center">
+            <p className="text-muted-foreground text-center" id={`answer-instructions-${questionId}`}>
               Glisse les mots ici dans le bon ordre
             </p>
           ) : (
@@ -132,8 +135,11 @@ export default function PracticeDragDrop({
                       : 'bg-primary text-primary-foreground hover-elevate active-elevate-2'
                   }`}
                   data-testid={`answer-item-${questionId}-${index}`}
+                  role="button"
+                  aria-label={`Mot ${index + 1}: ${item}. ${!showResult ? 'Cliquer pour retirer' : ''}`}
+                  tabIndex={showResult ? -1 : 0}
                 >
-                  {!showResult && <GripVertical className="w-4 h-4 opacity-50" />}
+                  {!showResult && <GripVertical className="w-4 h-4 opacity-50" aria-hidden="true" />}
                   {item}
                 </div>
               ))}
@@ -145,7 +151,7 @@ export default function PracticeDragDrop({
       {/* Available Options */}
       {availableOptions.length > 0 && !showResult && (
         <div>
-          <label className="text-sm font-medium text-muted-foreground mb-2 block">
+          <label className="text-sm font-medium text-muted-foreground mb-2 block" id={`options-zone-label-${questionId}`}>
             Options disponibles:
           </label>
           <div
@@ -153,6 +159,8 @@ export default function PracticeDragDrop({
             onDragOver={handleDragOver}
             onDrop={handleDropToOptions}
             data-testid={`dropzone-options-${questionId}`}
+            role="region"
+            aria-labelledby={`options-zone-label-${questionId}`}
           >
             {availableOptions.map((item, index) => (
               <div
@@ -162,8 +170,11 @@ export default function PracticeDragDrop({
                 onClick={() => handleClickToAnswer(item)}
                 className="px-4 py-2 rounded-full bg-secondary text-secondary-foreground font-medium shadow cursor-move hover-elevate active-elevate-2 flex items-center gap-2"
                 data-testid={`option-item-${questionId}-${index}`}
+                role="button"
+                aria-label={`Option: ${item}. Cliquer pour ajouter à la réponse`}
+                tabIndex={0}
               >
-                <GripVertical className="w-4 h-4 opacity-50" />
+                <GripVertical className="w-4 h-4 opacity-50" aria-hidden="true" />
                 {item}
               </div>
             ))}
@@ -177,6 +188,7 @@ export default function PracticeDragDrop({
           disabled={userAnswer.length === 0}
           className="w-full"
           data-testid={`button-submit-dragdrop-${questionId}`}
+          aria-label="Vérifier l'ordre des mots"
         >
           Vérifier
         </Button>
@@ -188,12 +200,14 @@ export default function PracticeDragDrop({
                 ? 'bg-green-100 dark:bg-green-900/30 border border-green-500'
                 : 'bg-red-100 dark:bg-red-900/30 border border-red-500'
             }`}
+            role="alert"
+            aria-live="polite"
           >
             <div className="flex items-start gap-2">
               {isCorrect ? (
-                <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" aria-label="Correct" />
               ) : (
-                <XCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                <XCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" aria-label="Incorrect" />
               )}
               <div className="flex-1">
                 <p className={`font-semibold ${isCorrect ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'}`}>
@@ -225,6 +239,7 @@ export default function PracticeDragDrop({
             variant="outline"
             className="w-full"
             data-testid={`button-reset-dragdrop-${questionId}`}
+            aria-label="Réessayer cette question"
           >
             Réessayer
           </Button>

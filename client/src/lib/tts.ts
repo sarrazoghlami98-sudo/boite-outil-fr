@@ -1,5 +1,11 @@
 export type TTSSpeed = 0.8 | 1 | 1.2;
 
+interface TTSCallbacks {
+  onStart?: () => void;
+  onEnd?: () => void;
+  onBoundary?: (event: SpeechSynthesisEvent) => void;
+}
+
 class TTSService {
   private synthesis: SpeechSynthesis | null = null;
   private currentUtterance: SpeechSynthesisUtterance | null = null;
@@ -15,7 +21,7 @@ class TTSService {
     this.speed = speed;
   }
 
-  speak(text: string, onEnd?: () => void): void {
+  speak(text: string, callbacks?: TTSCallbacks | (() => void)): void {
     if (!this.synthesis) {
       console.warn('Speech synthesis not supported');
       return;
@@ -27,8 +33,19 @@ class TTSService {
     this.currentUtterance.lang = 'fr-FR';
     this.currentUtterance.rate = this.speed;
     
-    if (onEnd) {
-      this.currentUtterance.onend = onEnd;
+    // Handle both old callback style and new callbacks object
+    if (typeof callbacks === 'function') {
+      this.currentUtterance.onend = callbacks;
+    } else if (callbacks) {
+      if (callbacks.onStart) {
+        this.currentUtterance.onstart = callbacks.onStart;
+      }
+      if (callbacks.onEnd) {
+        this.currentUtterance.onend = callbacks.onEnd;
+      }
+      if (callbacks.onBoundary) {
+        this.currentUtterance.onboundary = callbacks.onBoundary;
+      }
     }
 
     this.synthesis.speak(this.currentUtterance);

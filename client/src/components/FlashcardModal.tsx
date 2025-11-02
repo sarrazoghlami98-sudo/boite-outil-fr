@@ -34,6 +34,7 @@ export default function FlashcardModal({
   const [isMarkingComplete, setIsMarkingComplete] = useState(false);
   const [practiceResults, setPracticeResults] = useState<Record<string, boolean>>({});
   const [confettiShown, setConfettiShown] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const isCompleted = isFlashcardCompleted(categoryId, flashcard.id);
   const ttsControlsRef = useRef<{ handleSpaceKey: () => void }>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -79,6 +80,7 @@ export default function FlashcardModal({
     setPracticeResults({});
     setConfettiShown(false);
     setPracticeCompleted(false);
+    setIsSpeaking(false);
   }, [flashcard.id]);
 
   const handlePracticeAnswer = (questionId: string, isCorrect: boolean) => {
@@ -133,6 +135,7 @@ export default function FlashcardModal({
                 onClick={() => currentIndex > 0 && onNavigate('prev')}
                 disabled={currentIndex === 0}
                 data-testid="button-prev-flashcard"
+                aria-label="Carte précédente"
               >
                 <ChevronLeft className="w-5 h-5" />
               </Button>
@@ -140,7 +143,7 @@ export default function FlashcardModal({
                 <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground">
                   {flashcard.title}
                 </h2>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-sm text-muted-foreground mt-1" role="status" aria-live="polite">
                   Carte {currentIndex + 1} / {totalCards}
                 </p>
               </div>
@@ -148,7 +151,7 @@ export default function FlashcardModal({
             
             <div className="flex items-center gap-2">
               {isCompleted && (
-                <CheckCircle className="w-6 h-6 text-green-600" data-testid="icon-flashcard-completed" />
+                <CheckCircle className="w-6 h-6 text-green-600" data-testid="icon-flashcard-completed" aria-label="Carte complétée" />
               )}
               <Button
                 size="icon"
@@ -156,6 +159,7 @@ export default function FlashcardModal({
                 onClick={() => currentIndex < totalCards - 1 && onNavigate('next')}
                 disabled={currentIndex === totalCards - 1}
                 data-testid="button-next-flashcard"
+                aria-label="Carte suivante"
               >
                 <ChevronRight className="w-5 h-5" />
               </Button>
@@ -164,6 +168,7 @@ export default function FlashcardModal({
                 variant="ghost"
                 onClick={onClose}
                 data-testid="button-close-modal"
+                aria-label="Fermer la carte"
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -180,12 +185,19 @@ export default function FlashcardModal({
         {/* Content - Scrollable */}
         <div className="flex-1 overflow-y-auto p-6 md:p-12 space-y-8">
           {/* Rule Section */}
-          <Card className="p-6 bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
+          <Card 
+            className={`p-6 bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800 transition-all duration-300 ${
+              isSpeaking ? 'ring-2 ring-primary/50 ring-offset-2' : ''
+            }`}
+            aria-live="polite"
+          >
             <h3 className="font-display font-semibold text-xl md:text-2xl text-foreground mb-3 flex items-center gap-2">
               <BookOpen className="w-5 h-5" />
               <span>Règle</span>
             </h3>
-            <p className="text-base md:text-lg leading-snug text-foreground">
+            <p className={`text-base md:text-lg leading-snug text-foreground transition-colors duration-300 ${
+              isSpeaking ? 'bg-primary/10 px-2 py-1 rounded' : ''
+            }`}>
               {flashcard.rule}
             </p>
             
@@ -193,6 +205,8 @@ export default function FlashcardModal({
               <CollapsibleTrigger 
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                 data-testid="button-discover-toggle"
+                aria-label="Découvrir des astuces supplémentaires"
+                aria-expanded={isDiscoverOpen}
               >
                 <ChevronDown className={`w-4 h-4 transition-transform ${isDiscoverOpen ? 'rotate-180' : ''}`} />
                 <span>Découvrir</span>
@@ -214,22 +228,33 @@ export default function FlashcardModal({
               </h3>
               
               {flashcard.examples.map((example, idx) => (
-                <Card key={example.id} className="p-4 md:p-6 shadow-md">
+                <Card 
+                  key={example.id} 
+                  className={`p-4 md:p-6 shadow-md transition-all duration-300 ${
+                    isSpeaking ? 'ring-2 ring-primary/50 ring-offset-2' : ''
+                  }`}
+                  aria-live="polite"
+                >
                   {example.imageUrl && (
                     <div className="mb-4 rounded-lg overflow-hidden">
                       <img
                         src={example.imageUrl}
                         alt={example.imageAlt || `Exemple ${idx + 1}`}
                         className="w-full h-auto"
+                        loading="lazy"
                         data-testid={`img-example-${idx}`}
                       />
                     </div>
                   )}
-                  <InteractiveSentence
-                    sentence={example.sentence}
-                    replacements={example.replacements}
-                    categoryId={categoryId}
-                  />
+                  <div className={`transition-colors duration-300 ${
+                    isSpeaking ? 'bg-primary/10 px-2 py-1 rounded' : ''
+                  }`}>
+                    <InteractiveSentence
+                      sentence={example.sentence}
+                      replacements={example.replacements}
+                      categoryId={categoryId}
+                    />
+                  </div>
                 </Card>
               ))}
 
@@ -286,7 +311,12 @@ export default function FlashcardModal({
           <div className="p-4 md:p-6 space-y-4">
             {/* TTS Controls - Centered */}
             <div className="flex justify-center">
-              <TTSControls text={fullText} ref={ttsControlsRef} />
+              <TTSControls 
+                text={fullText} 
+                ref={ttsControlsRef}
+                onSpeakStart={() => setIsSpeaking(true)}
+                onSpeakEnd={() => setIsSpeaking(false)}
+              />
             </div>
             
             {/* Mark Complete Button */}
@@ -297,6 +327,8 @@ export default function FlashcardModal({
                 size="lg"
                 disabled={isMarkingComplete}
                 data-testid="button-mark-complete"
+                aria-label="Marquer cette carte comme complétée"
+                aria-busy={isMarkingComplete}
               >
                 <CheckCircle className={`w-5 h-5 mr-2 ${isMarkingComplete ? 'animate-spin' : ''}`} />
                 {isMarkingComplete ? 'En cours...' : 'Marquer comme complété'}
