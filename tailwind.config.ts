@@ -81,9 +81,30 @@ export default {
           busy: "rgb(239 68 68)",
           offline: "rgb(156 163 175)",
         },
+        // Category colors for tiles
+        category: {
+          conjugaison: "#3B82F6",
+          homophones: "#A855F7",
+          orthographe: "#10B981",
+          grammaire: "#F97316",
+          accords: "#EC4899",
+          ponctuation: "#14B8A6",
+          vocabulaire: "#6366F1",
+          phrases: "#EF4444",
+        },
+        // Grammar category colors for word replacements
+        grammar: {
+          verbe: "#10B981",
+          determinant: "#F97316",
+          pronom: "#3B82F6",
+          conjonction: "#EF4444",
+          adverbe: "#FBBF24",
+          preposition: "#A855F7",
+        },
       },
       fontFamily: {
         sans: ["var(--font-sans)"],
+        display: ["var(--font-display)"],
         serif: ["var(--font-serif)"],
         mono: ["var(--font-mono)"],
       },
